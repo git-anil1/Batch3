@@ -1,0 +1,5 @@
+hello 
+git add .
+git status
+git commmit -m "commiting files"
+git log
