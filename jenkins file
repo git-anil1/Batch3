@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('SCM stage') {
+            steps {
+                echo 'Hello Batch3 devops champs'
+                git 'https://github.com/wakaleo/game-of-life.git'
+            }
+        }    
+            stage('artifact build stage') {
+            steps {
+                echo 'maven building tool'
+                sh 'mvn clean install'
+            }
+        }    
+            stage('deploy tomcat stage') {
+            steps {
+                echo 'deploying tomcat'
+                deploy adapters: [tomcat9(credentialsId: '45517f20-f8bf-4905-a7c6-a8cdc15ae691', path: '', url: 'http://3.89.106.203:8080/')], contextPath: null, war: '**/*.war'
+            }
+        }    
+            stage('dmail configuration stage') {
+            steps {
+                echo 'sending email on succesful deployment'
+                emailext body: 'pls say yes', subject: 'on succesful deploymnet', to: 'k03522530@gmail.com'
+            }   
+        }
+    }
+}
